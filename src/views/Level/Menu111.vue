@@ -16,5 +16,6 @@ const text = ref('')
 <template>
   <ContentWrap :title="t('levelDemo.menu')">
     <div class="flex items-center"> Menu111: <ElInput v-model="text" class="pl-20px" /> </div>
+    <div class="flex items-center"> Menu111: <ElInput v-model="text" class="pl-20px" /> </div>
   </ContentWrap>
 </template>

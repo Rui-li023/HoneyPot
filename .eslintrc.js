@@ -4,7 +4,7 @@ module.exports = defineConfig({
   root: true,
   env: {
     browser: true,
-    node: true,
+    node: false,
     es6: true
   },
   parser: 'vue-eslint-parser',
