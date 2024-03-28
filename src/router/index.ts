@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
-import { Layout } from '@/utils/routerHelper'
+import { Layout, getParentLayout } from '@/utils/routerHelper'
 import { useI18n } from '@/hooks/web/useI18n'
 
 const { t } = useI18n()
@@ -228,65 +228,65 @@ export const constantRouterMap: AppRouteRecordRaw[] = [
 ]
 
 export const asyncRouterMap: AppRouteRecordRaw[] = [
-  // {
-  //   path: '/level',
-  //   component: Layout,
-  //   redirect: '/level/menu1/menu1-1/menu1-1-1',
-  //   name: 'Level',
-  //   meta: {
-  //     title: '123',
-  //     icon: 'carbon:skill-level-advanced'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       name: 'Menu1',
-  //       component: getParentLayout(),
-  //       redirect: '/level/menu1/menu1-1/menu1-1-1',
-  //       meta: {
-  //         title: '123111'
-  //       },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           name: 'Menu11',
-  //           component: getParentLayout(),
-  //           redirect: '/level/menu1/menu1-1/menu1-1-1',
-  //           meta: {
-  //             title: t('router.menu11'),
-  //             alwaysShow: true
-  //           },
-  //           children: [
-  //             {
-  //               path: 'menu1-1-1',
-  //               name: 'Menu111',
-  //               component: () => import('@/views/Level/Menu111.vue'),
-  //               meta: {
-  //                 title: t('router.menu111')
-  //               }
-  //             }
-  //           ]
-  //         }
-  //         // {
-  //         //   path: 'menu1-2',
-  //         //   name: 'Menu12',
-  //         //   component: () => import('@/views/Level/Menu12.vue'),
-  //         //   meta: {
-  //         //     title: t('router.menu12')
-  //         //   }
-  //         // }
-  //       ]
-  //     }
-  //     // {
-  //     //   path: 'menu2',
-  //     //   name: 'Menu2',
-  //     //   component: () => import('@/views/Level/Menu2.vue'),
-  //     //   meta: {
-  //     //     title: t('router.menu2')
-  //     //   }
-  //     // }
-  //   ]
-  // }
+  {
+    path: '/level',
+    component: Layout,
+    redirect: '/level/menu1/menu1-1/menu1-1-1',
+    name: 'Level',
+    meta: {
+      title: '123',
+      icon: 'carbon:skill-level-advanced'
+    },
+    children: [
+      {
+        path: 'menu1',
+        name: 'Menu1',
+        component: getParentLayout(),
+        redirect: '/level/menu1/menu1-1/menu1-1-1',
+        meta: {
+          title: '123111'
+        },
+        children: [
+          {
+            path: 'menu1-1',
+            name: 'Menu11',
+            component: getParentLayout(),
+            redirect: '/level/menu1/menu1-1/menu1-1-1',
+            meta: {
+              title: t('router.menu11'),
+              alwaysShow: true
+            },
+            children: [
+              {
+                path: 'menu1-1-1',
+                name: 'Menu111',
+                component: () => import('@/views/Level/Menu111.vue'),
+                meta: {
+                  title: t('router.menu111')
+                }
+              }
+            ]
+          },
+          {
+            path: 'menu1-2',
+            name: 'Menu12',
+            component: () => import('@/views/Level/Menu12.vue'),
+            meta: {
+              title: t('router.menu12')
+            }
+          }
+        ]
+      },
+      {
+        path: 'menu2',
+        name: 'Menu2',
+        component: () => import('@/views/Level/Menu2.vue'),
+        meta: {
+          title: t('router.menu2')
+        }
+      }
+    ]
+  }
 ]
 
 const router = createRouter({
