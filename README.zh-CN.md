@@ -1,3 +1,11 @@
+# 关于本项目的说明
+
+本项目fork自[vue-element-plus-admin](https://github.com/kailong321200875/vue-element-plus-admin)项目，从mini分支开始的开发
+
+安装和部署项目请看下方（或者原项目）的流程
+
+**在使用时，要切换到mini分支进行使用和开发**
+
 <div align="center"> <a href="https://github.com/kailong321200875/vue-element-plus-admin"> <img width="100" src="./public/logo.png"> </a> <br> <br>
 
 [![license](https://img.shields.io/github/license/kailong321200875/vue-element-plus-admin.svg)](LICENSE)
