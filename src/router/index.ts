@@ -234,7 +234,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     redirect: '/level/menu1/menu1-1/menu1-1-1',
     name: 'Level',
     meta: {
-      title: '123',
+      title: t('router.level'),
       icon: 'carbon:skill-level-advanced'
     },
     children: [
@@ -244,7 +244,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         component: getParentLayout(),
         redirect: '/level/menu1/menu1-1/menu1-1-1',
         meta: {
-          title: '123111'
+          title: t('router.menu1')
         },
         children: [
           {
