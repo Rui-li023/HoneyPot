@@ -125,7 +125,7 @@ export default {
     menu111: '菜单1-1-1',
     menu12: '菜单1-2',
     menu2: '菜单2',
-    dashboard: '首页',
+    dashboard: '威胁态势',
     analysis: '分析页',
     workplace: '工作台',
     guide: '引导',

@@ -111,7 +111,7 @@ const InfoRouter: AppRouteRecordRaw = {
       component: () => import('@/views/Info/Log.vue'),
       name: 'Log',
       meta: {
-        title: '日志查询',
+        title: '扫描感知',
         noCache: true,
         affix: true
       }
