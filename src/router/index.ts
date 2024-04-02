@@ -18,14 +18,6 @@ const authRouter: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: 'department',
-      component: () => import('@/views/Authorization/Department/Department.vue'),
-      name: 'Department',
-      meta: {
-        title: t('router.department')
-      }
-    },
-    {
       path: 'user',
       component: () => import('@/views/Authorization/User/User.vue'),
       name: 'User',
@@ -34,19 +26,11 @@ const authRouter: AppRouteRecordRaw = {
       }
     },
     {
-      path: 'menu',
-      component: () => import('@/views/Authorization/Menu/Menu.vue'),
-      name: 'Menu',
+      path: 'about',
+      component: () => import('@/views/Authorization/About/About.vue'),
+      name: 'About',
       meta: {
-        title: t('router.menuManagement')
-      }
-    },
-    {
-      path: 'role',
-      component: () => import('@/views/Authorization/Role/Role.vue'),
-      name: 'Role',
-      meta: {
-        title: t('router.role')
+        title: t('router.about')
       }
     }
   ]

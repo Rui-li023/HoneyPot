@@ -17,11 +17,39 @@ const props = defineProps({
     default: () => []
   }
 })
+// 密码要求
+function passwordRule(value, callback) {
+  if (!value) {
+    return callback(new Error('密码不能为空'))
+  }
+  // 检查密码是否同时包含字母和数字
+  if (!/(?=.*[0-9])(?=.*[a-zA-Z])/.test(value)) {
+    return callback(new Error('密码必须包含字母和数字'))
+  }
+  // 如果通过验证
+  callback()
+}
+
+// 邮箱验证规则
+function emailRule(value, callback) {
+  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+  if (!value) {
+    return callback(new Error('邮箱不能为空'))
+  }
+  if (!emailPattern.test(value)) {
+    return callback(new Error('请输入有效的邮箱地址'))
+  }
+  callback()
+}
 
 const rules = reactive({
   username: [required()],
   account: [required()],
-  'department.id': [required()]
+  password: [
+    required(),
+    { validator: passwordRule, message: '密码必须包含字母和数字', trigger: 'blur' }
+  ],
+  email: [required(), { validator: emailRule, message: '请输入有效的邮箱地址', trigger: 'blur' }]
 })
 
 const { formRegister, formMethods } = useForm()
