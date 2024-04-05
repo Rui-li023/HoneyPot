@@ -94,10 +94,102 @@ export const pieOptions: EChartsOption = {
       center: ['50%', '60%'],
       data: [
         { value: 335, name: 'ssh蜜罐' },
-        { value: 310, name: 'mysql蜜罐' },
-        { value: 234, name: '工控蜜罐' },
-        { value: 135, name: '高交互蜜罐' },
+        { value: 12, name: 'mysql蜜罐' },
+        { value: 1100, name: '工控蜜罐' },
+        { value: 15, name: '高交互蜜罐' },
         { value: 1548, name: '低交互蜜罐' }
+      ]
+    }
+  ]
+}
+
+export const IPOptions: EChartsOption = {
+  title: {
+    text: '攻击IP Top10',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c} ({d}%)'
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'left',
+    data: ['192.168.2.113', '192.168.2.13', '192.168.2.1', '192.168.2.114', '192.168.2.111']
+  },
+  series: [
+    {
+      name: '攻击IP Top10',
+      type: 'pie',
+      radius: '55%',
+      center: ['50%', '60%'],
+      data: [
+        { value: 335, name: '192.168.2.113' },
+        { value: 310, name: '192.168.2.13' },
+        { value: 234, name: '192.168.2.1' },
+        { value: 135, name: '192.168.2.114' },
+        { value: 1548, name: '192.168.2.111' }
+      ]
+    }
+  ]
+}
+
+export const portOptions: EChartsOption = {
+  title: {
+    text: '目的端口 Top10',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c} ({d}%)'
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'left',
+    data: ['8080', '3306', '502', '22', '102']
+  },
+  series: [
+    {
+      name: '目的端口 Top10',
+      type: 'pie',
+      radius: '55%',
+      center: ['50%', '60%'],
+      data: [
+        { value: 35, name: '8080' },
+        { value: 10, name: '3306' },
+        { value: 24, name: '502' },
+        { value: 15, name: '102' },
+        { value: 8, name: '22' }
+      ]
+    }
+  ]
+}
+
+export const protocolOptions: EChartsOption = {
+  title: {
+    text: '攻击协议 Top10',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c} ({d}%)'
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'left',
+    data: ['ssh', 'mysql', 'modbus', 's7comm']
+  },
+  series: [
+    {
+      name: '攻击来源组成',
+      type: 'pie',
+      radius: '55%',
+      center: ['80%', '60%'],
+      data: [
+        { value: 312, name: 'ssh' },
+        { value: 310, name: 'mysql' },
+        { value: 234, name: 'modbus' },
+        { value: 135, name: 's7comm' }
       ]
     }
   ]

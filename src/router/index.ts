@@ -71,7 +71,7 @@ const dashboardRouter: AppRouteRecordRaw = {
 const InfoRouter: AppRouteRecordRaw = {
   path: '/info',
   component: Layout,
-  redirect: '/info/regular',
+  redirect: '/info/log',
   name: 'Info',
   meta: {
     title: '蜜罐信息',
@@ -79,22 +79,22 @@ const InfoRouter: AppRouteRecordRaw = {
     alwaysShow: true
   },
   children: [
-    {
-      path: 'realtime',
-      component: () => import('@/views/Honeypot/Regular.vue'),
-      name: 'Realtime',
-      meta: {
-        title: '实时监控',
-        noCache: true,
-        affix: false
-      }
-    },
+    // {
+    //   path: 'realtime',
+    //   component: () => import('@/views/Info/Attack/Attack.vue'),
+    //   name: 'Realtime',
+    //   meta: {
+    //     title: '实时监控',
+    //     noCache: true,
+    //     affix: false
+    //   }
+    // },
     {
       path: 'log',
       component: () => import('@/views/Info/Log.vue'),
       name: 'Log',
       meta: {
-        title: '扫描感知',
+        title: '常规日志',
         noCache: true,
         affix: false
       }

@@ -3,7 +3,14 @@
 import Performance from './components/Performance.vue'
 import { ElRow, ElCol, ElCard, ElSkeleton } from 'element-plus'
 import { Echart } from '@/components/Echart'
-import { pieOptions, barOptions, lineOptions } from './echarts-data'
+import {
+  pieOptions,
+  barOptions,
+  lineOptions,
+  IPOptions,
+  portOptions,
+  protocolOptions
+} from './echarts-data'
 import { ref, reactive } from 'vue'
 import {
   getUserAccessSourceApi,
@@ -19,7 +26,11 @@ const { t } = useI18n()
 const loading = ref(true)
 
 const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
-
+const barOptionsData = reactive<EChartsOption>(barOptions) as EChartsOption
+const lineOptionsData = reactive<EChartsOption>(lineOptions) as EChartsOption
+const IPOptionsData = reactive<EChartsOption>(IPOptions) as EChartsOption
+const portOptionsData = reactive<EChartsOption>(portOptions) as EChartsOption
+const protocolOptionsData = reactive<EChartsOption>(protocolOptions) as EChartsOption
 // 用户来源
 const getUserAccessSource = async () => {
   const res = await getUserAccessSourceApi().catch(() => {})
@@ -37,8 +48,6 @@ const getUserAccessSource = async () => {
     })
   }
 }
-
-const barOptionsData = reactive<EChartsOption>(barOptions) as EChartsOption
 
 // 周活跃量
 const getWeeklyUserActivity = async () => {
@@ -58,8 +67,6 @@ const getWeeklyUserActivity = async () => {
     ])
   }
 }
-
-const lineOptionsData = reactive<EChartsOption>(lineOptions) as EChartsOption
 
 // 每月销售总额
 const getMonthlySales = async () => {
@@ -115,6 +122,27 @@ getAllApi()
       <ElCard shadow="hover" class="mb-20px">
         <ElSkeleton :loading="loading" animated>
           <Echart :options="barOptionsData" :height="300" />
+        </ElSkeleton>
+      </ElCard>
+    </ElCol>
+    <ElCol :xl="8" :lg="8" :md="24" :sm="24" :xs="24" :span="8">
+      <ElCard shadow="hover" class="mb-20px">
+        <ElSkeleton :loading="loading" animated>
+          <Echart :options="IPOptionsData" :height="300" />
+        </ElSkeleton>
+      </ElCard>
+    </ElCol>
+    <ElCol :xl="8" :lg="8" :md="24" :sm="24" :xs="24" :span="8">
+      <ElCard shadow="hover" class="mb-20px">
+        <ElSkeleton :loading="loading" animated>
+          <Echart :options="portOptionsData" :height="300" />
+        </ElSkeleton>
+      </ElCard>
+    </ElCol>
+    <ElCol :xl="8" :lg="8" :md="24" :sm="24" :xs="24" :span="8">
+      <ElCard shadow="hover" class="mb-20px">
+        <ElSkeleton :loading="loading" animated>
+          <Echart :options="protocolOptionsData" :height="300" />
         </ElSkeleton>
       </ElCard>
     </ElCol>

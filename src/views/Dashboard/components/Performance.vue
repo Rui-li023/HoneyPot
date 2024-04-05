@@ -19,7 +19,7 @@ import { ElRow, ElProgress, ElCard, ElSpace } from 'element-plus'
           />
         </svg>
         <span> CPU：</span>
-        <el-progress :percentage="10" :text-inside="true" :stroke-width="22" status="success" />
+        <el-progress :percentage="32" :text-inside="true" :stroke-width="22" status="success" />
       </el-row>
 
       <el-row>
@@ -37,7 +37,7 @@ import { ElRow, ElProgress, ElCard, ElSpace } from 'element-plus'
           />
         </svg>
         <span> 磁盘占用：</span>
-        <el-progress :percentage="20" :text-inside="true" :stroke-width="22" status="success" />
+        <el-progress :percentage="54" :text-inside="true" :stroke-width="22" status="success" />
       </el-row>
 
       <ElRow>
