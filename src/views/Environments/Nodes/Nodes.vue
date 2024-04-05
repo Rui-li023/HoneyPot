@@ -1,26 +1,25 @@
 <script setup lang="tsx">
 import { ContentWrap } from '@/components/ContentWrap'
 import { useI18n } from '@/hooks/web/useI18n'
-import { Table, TableColumn } from '@/components/Table'
-import { ref, unref, reactive, watch } from 'vue'
+import { Table } from '@/components/Table'
+import { ref, unref, reactive } from 'vue'
 import { BaseButton } from '@/components/Button'
-import { getScanLogListApi } from '@/api/scanlog'
+import { getNodeApi } from '@/api/environment'
 import { useTable } from '@/hooks/web/useTable'
 import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
-import type { ScanLogItem } from '@/api/scanlog/types'
+import type { NodeItem } from '@/api/environment/types'
 import Detail from './components/Detail.vue'
 import { Dialog } from '@/components/Dialog'
-import { ElTag, ElTree } from 'element-plus'
+// import { ElTree } from 'element-plus'
 import { Search } from '@/components/Search'
-import { DateTimePickerComponentProps } from '@/components/Form'
+// import { setStyle } from '../../../utils/domUtils'
 const { t } = useI18n()
 
 // 获取数据
 const { tableRegister, tableState, tableMethods } = useTable({
   fetchDataApi: async () => {
     const { pageSize, currentPage } = tableState
-    const res = await getScanLogListApi({
-      id: unref(currentNodeKey),
+    const res = await getNodeApi({
       pageIndex: unref(currentPage),
       pageSize: unref(pageSize),
       ...unref(searchParams)
@@ -35,15 +34,6 @@ const { tableRegister, tableState, tableMethods } = useTable({
 const { total, loading, dataList, pageSize, currentPage } = tableState
 const { getList } = tableMethods
 
-const dateTimePickerComponentProps: DateTimePickerComponentProps = {
-  type: 'daterange',
-  valueFormat: 'yyyy-MM-dd',
-  defaultValue: [new Date(), new Date()],
-  rangeSeparator: '至',
-  startPlaceholder: '开始日期',
-  endPlaceholder: '结束日期'
-}
-
 const crudSchemas = reactive<CrudSchema[]>([
   {
     field: 'id',
@@ -56,78 +46,23 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    field: 'source_ip',
-    label: '来源IP'
+    field: 'name',
+    label: '主机名字'
   },
   {
-    field: 'source_port',
-    label: '来源端口'
+    field: 'ip',
+    label: 'IP地址'
   },
   {
-    field: 'dest_ip',
-    label: '目的IP'
-  },
-  {
-    field: 'dest_port',
-    label: '目的端口'
-  },
-  {
-    field: 'protocol',
-    label: '传输协议',
-    search: {
-      component: 'Select',
-      componentProps: {
-        options: [
-          {
-            label: 'TCP',
-            value: 'TCP'
-          },
-          {
-            label: 'UDP',
-            value: 'UDP'
-          },
-          {
-            label: 'ICMPv4',
-            value: 'ICMPv4'
-          },
-          {
-            label: 'ICMPv6',
-            value: 'ICMPv6'
-          }
-        ]
-      }
-    }
-  },
-  {
-    field: 'type',
-    label: '蜜罐种类'
-  },
-  {
-    field: 'display_time',
-    label: '日志时间',
-    sortable: true,
-    search: {
-      component: 'DatePicker',
-      componentProps: dateTimePickerComponentProps
-    },
-    table: {
-      width: 200
-    }
-  },
-  {
-    field: 'importance',
-    label: '告警等级',
-    table: {
-      formatter: (_: Recordable, __: TableColumn, cellValue: number) => {
-        return (
-          <ElTag type={cellValue === 1 ? 'success' : cellValue === 2 ? 'warning' : 'danger'}>
-            {cellValue === 1
-              ? t('tableDemo.important')
-              : cellValue === 2
-                ? t('tableDemo.good')
-                : t('tableDemo.commonly')}
-          </ElTag>
-        )
+    field: 'online',
+    label: '是否在线',
+    detail: {
+      slots: {
+        default: (data: any) => {
+          const row = data as NodeItem
+          console.log(data)
+          return row.online ? <>是</> : <>否</>
+        }
       }
     },
     search: {
@@ -135,18 +70,57 @@ const crudSchemas = reactive<CrudSchema[]>([
       componentProps: {
         options: [
           {
-            label: '一级',
-            value: '0'
+            label: '在线',
+            value: 1
           },
           {
-            label: '二级',
-            value: '1'
-          },
-          {
-            label: '三级',
-            value: '2'
+            label: '离线',
+            value: 0
           }
         ]
+      }
+    },
+    table: {
+      showOverflowTooltip: false,
+      align: 'center',
+      headerAlign: 'center',
+      slots: {
+        default: (data: any) => {
+          const row = data.row as NodeItem
+          return row.online ? (
+            <>
+              <div class="text-green-500">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2em"
+                  height="2em"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2"
+                  />
+                </svg>
+              </div>
+            </>
+          ) : (
+            <>
+              <div class="text-red-500">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2em"
+                  height="2em"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2"
+                  />
+                </svg>
+              </div>
+            </>
+          )
+        }
       }
     }
   },
@@ -154,10 +128,10 @@ const crudSchemas = reactive<CrudSchema[]>([
     field: 'action',
     label: t('tableDemo.action'),
     table: {
-      width: 100,
+      width: 200,
       slots: {
         default: (data: any) => {
-          const row = data.row as ScanLogItem
+          const row = data.row as NodeItem
           return (
             <>
               <BaseButton type="success" onClick={() => action(row, 'detail')}>
@@ -185,22 +159,12 @@ const setSearchParams = (params: any) => {
   searchParams.value = params
   getList()
 }
-const treeEl = ref<typeof ElTree>()
-
-const currentNodeKey = ref('')
-
-const currentDepartment = ref('')
-watch(
-  () => currentDepartment.value,
-  (val) => {
-    unref(treeEl)!.filter(val)
-  }
-)
+// const treeEl = ref<typeof ElTree>()
 
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
 
-const currentRow = ref<ScanLogItem>()
+const currentRow = ref<NodeItem>()
 const actionType = ref('')
 
 // const delLoading = ref(false)
@@ -216,7 +180,7 @@ const actionType = ref('')
 //   })
 // }
 
-const action = (row: ScanLogItem, type: string) => {
+const action = (row: NodeItem, type: string) => {
   dialogTitle.value = t(type === 'edit' ? 'exampleDemo.edit' : 'exampleDemo.detail')
   actionType.value = type
   currentRow.value = { ...row }
@@ -226,7 +190,7 @@ const action = (row: ScanLogItem, type: string) => {
 
 <template>
   <div class="flex w-100% h-100%">
-    <ContentWrap class="flex-[3] ml-10px" title="常规日志">
+    <ContentWrap class="flex-[3] ml-10px" title="节点管理">
       <Search
         :schema="allSchemas.searchSchema"
         @reset="setSearchParams"

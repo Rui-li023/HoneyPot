@@ -79,16 +79,6 @@ const InfoRouter: AppRouteRecordRaw = {
     alwaysShow: true
   },
   children: [
-    // {
-    //   path: 'realtime',
-    //   component: () => import('@/views/Info/Attack/Attack.vue'),
-    //   name: 'Realtime',
-    //   meta: {
-    //     title: '实时监控',
-    //     noCache: true,
-    //     affix: false
-    //   }
-    // },
     {
       path: 'log',
       component: () => import('@/views/Info/Log.vue'),
@@ -103,29 +93,39 @@ const InfoRouter: AppRouteRecordRaw = {
 }
 
 const HoneypotManageRouter: AppRouteRecordRaw = {
-  path: '/honeypot',
+  path: '/environment',
   component: Layout,
-  redirect: '/honeypot/regular',
-  name: 'Honeypot',
+  redirect: '/environment/node',
+  name: 'Environment',
   meta: {
-    title: '蜜罐管理',
+    title: '环境管理',
     icon: 'ph:codesandbox-logo-fill',
     alwaysShow: true
   },
   children: [
     {
-      path: 'regular',
-      component: () => import('@/views/Honeypot/Regular.vue'),
-      name: 'Regular',
+      path: 'node',
+      component: () => import('@/views/Environments/Nodes/Nodes.vue'),
+      name: 'Node',
       meta: {
-        title: '常规管理',
+        title: '节点管理',
+        noCache: true,
+        affix: false
+      }
+    },
+    {
+      path: 'container',
+      component: () => import('@/views/Environments/Containers/Containers.vue'),
+      name: 'Container',
+      meta: {
+        title: '容器管理',
         noCache: true,
         affix: false
       }
     },
     {
       path: 'image',
-      component: () => import('@/views/Honeypot/Image.vue'),
+      component: () => import('@/views/Environments/Images/Images.vue'),
       name: 'Image',
       meta: {
         title: '镜像管理',
@@ -133,29 +133,8 @@ const HoneypotManageRouter: AppRouteRecordRaw = {
         affix: false
       }
     }
-    // {
-    //   path: 'workplace',
-    //   component: () => import('@/views/Dashboard/Workplace.vue'),
-    //   name: 'Workplace',
-    //   meta: {
-    //     title: t('router.workplace'),
-    //     noCache: true
-    //   }
-    // }
   ]
 }
-
-// const settingsRouter: AppRouteRecordRaw = {
-//   path: '/honeypot',
-//   component: Layout,
-//   redirect: '/honeypot/regular',
-//   name: 'Honeypot',
-//   meta: {
-//     title: '',
-//     icon: 'ant-design:dashboard-filled',
-//     alwaysShow: true
-//   }
-// }
 
 export const constantRouterMap: AppRouteRecordRaw[] = [
   {
