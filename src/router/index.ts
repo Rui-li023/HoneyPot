@@ -53,8 +53,7 @@ const dashboardRouter: AppRouteRecordRaw = {
       name: 'Analysis',
       meta: {
         title: t('router.analysis'),
-        noCache: true,
-        affix: true
+        noCache: true
       }
     },
     {
@@ -76,7 +75,7 @@ const InfoRouter: AppRouteRecordRaw = {
   name: 'Info',
   meta: {
     title: '蜜罐信息',
-    icon: 'ant-design:dashboard-filled',
+    icon: 'material-symbols:cognition',
     alwaysShow: true
   },
   children: [
@@ -87,7 +86,7 @@ const InfoRouter: AppRouteRecordRaw = {
       meta: {
         title: '实时监控',
         noCache: true,
-        affix: true
+        affix: false
       }
     },
     {
@@ -97,7 +96,7 @@ const InfoRouter: AppRouteRecordRaw = {
       meta: {
         title: '扫描感知',
         noCache: true,
-        affix: true
+        affix: false
       }
     }
   ]
@@ -110,7 +109,7 @@ const HoneypotManageRouter: AppRouteRecordRaw = {
   name: 'Honeypot',
   meta: {
     title: '蜜罐管理',
-    icon: 'ant-design:dashboard-filled',
+    icon: 'ph:codesandbox-logo-fill',
     alwaysShow: true
   },
   children: [
@@ -121,7 +120,7 @@ const HoneypotManageRouter: AppRouteRecordRaw = {
       meta: {
         title: '常规管理',
         noCache: true,
-        affix: true
+        affix: false
       }
     },
     {
@@ -131,7 +130,7 @@ const HoneypotManageRouter: AppRouteRecordRaw = {
       meta: {
         title: '镜像管理',
         noCache: true,
-        affix: true
+        affix: false
       }
     }
     // {

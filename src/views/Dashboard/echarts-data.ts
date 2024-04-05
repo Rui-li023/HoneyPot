@@ -5,7 +5,7 @@ const { t } = useI18n()
 
 export const lineOptions: EChartsOption = {
   title: {
-    text: 'IP攻击总览',
+    text: '攻击趋势',
     left: 'center'
   },
   xAxis: {
@@ -105,7 +105,7 @@ export const pieOptions: EChartsOption = {
 
 export const barOptions: EChartsOption = {
   title: {
-    text: '每周受攻击数量',
+    text: '本周受攻击数量',
     left: 'center'
   },
   tooltip: {

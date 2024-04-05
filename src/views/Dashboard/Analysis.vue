@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PanelGroup from './components/PanelGroup.vue'
+// import PanelGroup from './components/PanelGroup.vue'
 import Performance from './components/Performance.vue'
 import { ElRow, ElCol, ElCard, ElSkeleton } from 'element-plus'
 import { Echart } from '@/components/Echart'
@@ -102,7 +102,7 @@ getAllApi()
 
 <template>
   <Performance />
-  <PanelGroup />
+  <!-- <PanelGroup /> -->
   <ElRow :gutter="20" justify="space-between">
     <ElCol :xl="10" :lg="10" :md="24" :sm="24" :xs="24">
       <ElCard shadow="hover" class="mb-20px">
