@@ -1,8 +1,21 @@
 import request from '@/axios'
-import { NodeListResponse, NodeListParams } from './types'
+import {
+  NodeListResponse,
+  NodeListParams,
+  ContainerListResponse,
+  ContainerListParams
+} from './types'
 
 export const getNodeApi = (params: NodeListParams) => {
   return request.get<NodeListResponse>({ url: '/mock/node/list', params })
+}
+
+export const getContainerApi = (params: ContainerListParams) => {
+  return request.get<ContainerListResponse>({ url: '/mock/container/list', params })
+}
+
+export const getImageApi = (params: ContainerListParams) => {
+  return request.get<ContainerListResponse>({ url: '/mock/image/list', params })
 }
 
 // export const getUserByIdApi = (params: DepartmentUserParams) => {

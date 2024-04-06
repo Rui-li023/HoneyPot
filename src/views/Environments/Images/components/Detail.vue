@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { PropType } from 'vue'
-import { ScanLogItem } from '@/api/scanlog/types'
+import { ImageItem } from '@/api/environment/types'
 import { Descriptions, DescriptionsSchema } from '@/components/Descriptions'
 
 defineProps({
   currentRow: {
-    type: Object as PropType<ScanLogItem>,
+    type: Object as PropType<ImageItem>,
     default: () => undefined
   },
   detailSchema: {

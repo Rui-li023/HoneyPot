@@ -10,7 +10,6 @@ import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 import type { NodeItem } from '@/api/environment/types'
 import Detail from './components/Detail.vue'
 import { Dialog } from '@/components/Dialog'
-// import { ElTree } from 'element-plus'
 import { Search } from '@/components/Search'
 // import { setStyle } from '../../../utils/domUtils'
 const { t } = useI18n()
@@ -31,10 +30,44 @@ const { tableRegister, tableState, tableMethods } = useTable({
   }
 })
 
+const AddAction = () => {
+  dialogTitle.value = t('exampleDemo.add')
+  currentRow.value = undefined
+  dialogVisible.value = true
+  actionType.value = ''
+}
+const delLoading = ref(false)
+const ids = ref<string[]>([])
+
 const { total, loading, dataList, pageSize, currentPage } = tableState
-const { getList } = tableMethods
+const { getList, getElTableExpose, delList } = tableMethods
+
+const delData = async (row?: NodeItem) => {
+  const elTableExpose = await getElTableExpose()
+  ids.value = row ? [row.id] : elTableExpose?.getSelectionRows().map((v: NodeItem) => v.id) || []
+  delLoading.value = true
+
+  await delList(unref(ids).length).finally(() => {
+    delLoading.value = false
+  })
+}
 
 const crudSchemas = reactive<CrudSchema[]>([
+  {
+    field: 'selection',
+    search: {
+      hidden: true
+    },
+    form: {
+      hidden: true
+    },
+    detail: {
+      hidden: true
+    },
+    table: {
+      type: 'selection'
+    }
+  },
   {
     field: 'id',
     label: 'ID',
@@ -137,6 +170,9 @@ const crudSchemas = reactive<CrudSchema[]>([
               <BaseButton type="success" onClick={() => action(row, 'detail')}>
                 {t('exampleDemo.detail')}
               </BaseButton>
+              <BaseButton type="danger" onClick={() => delData(row)}>
+                {t('exampleDemo.del')}
+              </BaseButton>
             </>
           )
         }
@@ -197,6 +233,12 @@ const action = (row: NodeItem, type: string) => {
         @search="setSearchParams"
       />
 
+      <div class="mb-10px">
+        <BaseButton type="primary" @click="AddAction">{{ t('exampleDemo.add') }}</BaseButton>
+        <BaseButton :loading="delLoading" type="danger" @click="delData()">
+          {{ t('exampleDemo.del') }}
+        </BaseButton>
+      </div>
       <Table
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
