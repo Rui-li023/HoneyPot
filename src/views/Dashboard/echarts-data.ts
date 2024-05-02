@@ -1,6 +1,13 @@
 import { EChartsOption } from 'echarts'
 import { useI18n } from '@/hooks/web/useI18n'
-import { getScanLogListApi } from '@/api/scanlog/index'
+import {
+  getScanLogListApi,
+  conpotApi,
+  honeydApi,
+  kippoApi,
+  real_honeypotApi,
+  webtrapApi
+} from '@/api/scanlog/index'
 import { ScanLogItem } from '@/api/scanlog/types'
 import * as _ from 'radash'
 
@@ -87,7 +94,21 @@ export const lineOptions: EChartsOption = {
   ]
 }
 
-const types = _.counting(data, (a) => a.type)
+const conpot = await conpotApi({
+  from_date: theDayBeforeWeek().toISOString().slice(0, -1)
+})
+const honeyd = await honeydApi({
+  from_date: theDayBeforeWeek().toISOString().slice(0, -1)
+})
+const kippo = await kippoApi({
+  from_date: theDayBeforeWeek().toISOString().slice(0, -1)
+})
+const real_honeypot = await real_honeypotApi({
+  from_date: theDayBeforeWeek().toISOString().slice(0, -1)
+})
+const webtrap = await webtrapApi({
+  from_date: theDayBeforeWeek().toISOString().slice(0, -1)
+})
 
 export const pieOptions: EChartsOption = {
   title: {
@@ -110,11 +131,11 @@ export const pieOptions: EChartsOption = {
       radius: '55%',
       center: ['50%', '60%'],
       data: [
-        { value: types.conpot, name: 'conpot' },
-        { value: types.honeyd, name: 'honeyd' },
-        { value: types.kippo, name: 'kippo' },
-        { value: types.real_honeypot, name: '高交互蜜罐' },
-        { value: types.webtrap, name: 'webtrap' }
+        { value: conpot.length, name: 'conpot' },
+        { value: honeyd.length, name: 'honeyd' },
+        { value: kippo.length, name: 'kippo' },
+        { value: real_honeypot.length, name: '高交互蜜罐' },
+        { value: webtrap.length, name: 'webtrap' }
       ]
     }
   ]
@@ -208,7 +229,6 @@ export const protocolOptions: EChartsOption = {
     }
   ]
 }
-console.log(data.map((i) => i.time))
 const weekly = _.sort(
   _.listify(
     _.counting(data, (a) => new Date(a.time).getDay()),
