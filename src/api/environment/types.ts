@@ -21,15 +21,15 @@ export interface NodeListParams {
 }
 
 export interface ContainerItem {
-  id: string
-  name: string
-  startTime: string
-  cmd: string
-  displayTime: string
+  Id: string
+  Names: string[]
+  Created: number
+  Command: string
+  // displayTime: string
 }
 
 export interface ContainerListResponse {
-  list: NodeItem[]
+  list: ContainerItem[]
   total: number
 }
 
@@ -40,10 +40,10 @@ export interface ContainerListParams {
 }
 
 export interface ImageItem {
-  id: string
-  name: string
-  size: string
-  createTime: string
+  Id: string
+  RepoTags: string[]
+  Size: number
+  Created: number
 }
 
 export interface ImageListResponse {
@@ -51,11 +51,11 @@ export interface ImageListResponse {
   total: number
 }
 
-export interface ImageListParams {
-  pageSize: number
-  pageIndex: number
-  name?: string
-}
+// export interface ImageListParams {
+//   pageSize: number
+//   pageIndex: number
+//   name?: string
+// }
 // export interface DepartmentUserItem {
 //   id: string
 //   username: string

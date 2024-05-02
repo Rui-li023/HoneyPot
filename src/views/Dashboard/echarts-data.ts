@@ -1,7 +1,22 @@
 import { EChartsOption } from 'echarts'
 import { useI18n } from '@/hooks/web/useI18n'
+import { getScanLogListApi } from '@/api/scanlog/index'
+import { ScanLogItem } from '@/api/scanlog/types'
+import * as _ from 'radash'
 
 const { t } = useI18n()
+
+const theDayBeforeWeek = function () {
+  const now = new Date()
+  const d = now.getTime()
+  const result = new Date()
+  result.setTime(d - 7 * 24 * 60 * 60 * 1000)
+  return result
+}
+
+const data = await getScanLogListApi({
+  from_date: theDayBeforeWeek().toISOString().slice(0, -1)
+})
 
 export const lineOptions: EChartsOption = {
   title: {
@@ -72,6 +87,8 @@ export const lineOptions: EChartsOption = {
   ]
 }
 
+const types = _.counting(data, (a) => a.type)
+
 export const pieOptions: EChartsOption = {
   title: {
     text: '攻击来源组成',
@@ -84,7 +101,7 @@ export const pieOptions: EChartsOption = {
   legend: {
     orient: 'vertical',
     left: 'left',
-    data: ['ssh蜜罐', 'mysql蜜罐', '工控蜜罐', '高交互蜜罐', '低交互蜜罐']
+    data: ['conpot', 'honeyd', 'kippo', '高交互蜜罐', 'webtrap']
   },
   series: [
     {
@@ -93,15 +110,25 @@ export const pieOptions: EChartsOption = {
       radius: '55%',
       center: ['50%', '60%'],
       data: [
-        { value: 335, name: 'ssh蜜罐' },
-        { value: 12, name: 'mysql蜜罐' },
-        { value: 1100, name: '工控蜜罐' },
-        { value: 15, name: '高交互蜜罐' },
-        { value: 1548, name: '低交互蜜罐' }
+        { value: types.conpot, name: 'conpot' },
+        { value: types.honeyd, name: 'honeyd' },
+        { value: types.kippo, name: 'kippo' },
+        { value: types.real_honeypot, name: '高交互蜜罐' },
+        { value: types.webtrap, name: 'webtrap' }
       ]
     }
   ]
 }
+
+const top10 = function <T extends string | number>(attr: (item: ScanLogItem) => T) {
+  return _.sort(
+    _.listify(_.counting(data, attr), (k, v) => ({ name: k, value: v })),
+    (i) => i.value,
+    true
+  ).slice(0, 10)
+}
+
+const top_10_ip = top10((a) => a.source_ip)
 
 export const IPOptions: EChartsOption = {
   title: {
@@ -115,7 +142,7 @@ export const IPOptions: EChartsOption = {
   legend: {
     orient: 'vertical',
     left: 'left',
-    data: ['192.168.2.113', '192.168.2.13', '192.168.2.1', '192.168.2.114', '192.168.2.111']
+    data: top_10_ip.map((i) => i.name)
   },
   series: [
     {
@@ -123,16 +150,12 @@ export const IPOptions: EChartsOption = {
       type: 'pie',
       radius: '55%',
       center: ['50%', '60%'],
-      data: [
-        { value: 335, name: '192.168.2.113' },
-        { value: 310, name: '192.168.2.13' },
-        { value: 234, name: '192.168.2.1' },
-        { value: 135, name: '192.168.2.114' },
-        { value: 1548, name: '192.168.2.111' }
-      ]
+      data: top_10_ip
     }
   ]
 }
+
+const top_10_port = top10((a) => a.dest_port)
 
 export const portOptions: EChartsOption = {
   title: {
@@ -146,7 +169,7 @@ export const portOptions: EChartsOption = {
   legend: {
     orient: 'vertical',
     left: 'left',
-    data: ['8080', '3306', '502', '22', '102']
+    data: top_10_port.map((p) => p.name.toString())
   },
   series: [
     {
@@ -154,16 +177,12 @@ export const portOptions: EChartsOption = {
       type: 'pie',
       radius: '55%',
       center: ['50%', '60%'],
-      data: [
-        { value: 35, name: '8080' },
-        { value: 10, name: '3306' },
-        { value: 24, name: '502' },
-        { value: 15, name: '102' },
-        { value: 8, name: '22' }
-      ]
+      data: top_10_port
     }
   ]
 }
+
+const top_10_protocol = top10((a) => a.protocol)
 
 export const protocolOptions: EChartsOption = {
   title: {
@@ -177,23 +196,26 @@ export const protocolOptions: EChartsOption = {
   legend: {
     orient: 'vertical',
     left: 'left',
-    data: ['ssh', 'mysql', 'modbus', 's7comm']
+    data: top_10_protocol.map((p) => p.name)
   },
   series: [
     {
       name: '攻击来源组成',
       type: 'pie',
       radius: '55%',
-      center: ['80%', '60%'],
-      data: [
-        { value: 312, name: 'ssh' },
-        { value: 310, name: 'mysql' },
-        { value: 234, name: 'modbus' },
-        { value: 135, name: 's7comm' }
-      ]
+      center: ['50%', '60%'],
+      data: top_10_protocol
     }
   ]
 }
+console.log(data.map((i) => i.time))
+const weekly = _.sort(
+  _.listify(
+    _.counting(data, (a) => new Date(a.time).getDay()),
+    (k, v) => ({ day: k, value: v })
+  ),
+  (d) => d.day
+)
 
 export const barOptions: EChartsOption = {
   title: {
@@ -232,7 +254,7 @@ export const barOptions: EChartsOption = {
   series: [
     {
       name: '数量',
-      data: [13253, 34235, 26321, 12340, 24643, 1322, 1324],
+      data: weekly.map((it) => it.value),
       type: 'bar'
     }
   ]

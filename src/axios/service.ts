@@ -45,7 +45,7 @@ const service = {
       if (config.interceptors?.requestInterceptors) {
         config = config.interceptors.requestInterceptors(config as any)
       }
-
+      console.log(config)
       axiosInstance
         .request(config)
         .then((res) => {

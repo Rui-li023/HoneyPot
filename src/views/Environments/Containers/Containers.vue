@@ -18,15 +18,10 @@ const { t } = useI18n()
 // 获取数据
 const { tableRegister, tableState, tableMethods } = useTable({
   fetchDataApi: async () => {
-    const { pageSize, currentPage } = tableState
-    const res = await getContainerApi({
-      pageIndex: unref(currentPage),
-      pageSize: unref(pageSize),
-      ...unref(searchParams)
-    })
+    const res = await getContainerApi()
     return {
-      list: res.data.list || [],
-      total: res.data.total || 0
+      list: res.list || [],
+      total: res.total || 0
     }
   }
 })
@@ -46,8 +41,8 @@ const { getElTableExpose, delList } = tableMethods
 const delData = async (row?: ContainerItem) => {
   const elTableExpose = await getElTableExpose()
   ids.value = row
-    ? [row.id]
-    : elTableExpose?.getSelectionRows().map((v: ContainerItem) => v.id) || []
+    ? [row.Id]
+    : elTableExpose?.getSelectionRows().map((v: ContainerItem) => v.Id) || []
   delLoading.value = true
 
   await delList(unref(ids).length).finally(() => {
@@ -72,38 +67,38 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    field: 'id',
+    field: 'Id',
     label: '容器ID',
     search: {
       hidden: true
     }
   },
   {
-    field: 'startTime',
+    field: 'Created',
     label: '启动时间'
   },
   {
-    field: 'name',
+    field: 'Names',
     label: '容器名称'
   },
   {
-    field: 'cmd',
+    field: 'Command',
     label: '启动命令',
     search: {
       hidden: true
     }
   },
-  {
-    field: 'displayTime',
-    label: '创建时间',
-    sortable: true,
-    search: {
-      hidden: true
-    },
-    table: {
-      width: 300
-    }
-  },
+  // {
+  //   field: 'displayTime',
+  //   label: '创建时间',
+  //   sortable: true,
+  //   search: {
+  //     hidden: true
+  //   },
+  //   table: {
+  //     width: 300
+  //   }
+  // },
   {
     field: 'action',
     label: t('tableDemo.action'),
@@ -136,7 +131,6 @@ const crudSchemas = reactive<CrudSchema[]>([
 
 const { allSchemas } = useCrudSchemas(crudSchemas)
 
-const searchParams = ref({})
 // const setSearchParams = (params: any) => {
 //   currentPage.value = 1
 //   searchParams.value = params

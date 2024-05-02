@@ -1,21 +1,16 @@
 import request from '@/axios'
-import {
-  NodeListResponse,
-  NodeListParams,
-  ContainerListResponse,
-  ContainerListParams
-} from './types'
+import { NodeListResponse, NodeListParams, ContainerListResponse } from './types'
 
 export const getNodeApi = (params: NodeListParams) => {
   return request.get<NodeListResponse>({ url: '/mock/node/list', params })
 }
 
-export const getContainerApi = (params: ContainerListParams) => {
-  return request.get<ContainerListResponse>({ url: '/mock/container/list', params })
+export const getContainerApi = () => {
+  return request.get<ContainerListResponse>({ url: '/docker/containers' })
 }
 
-export const getImageApi = (params: ContainerListParams) => {
-  return request.get<ContainerListResponse>({ url: '/mock/image/list', params })
+export const getImageApi = () => {
+  return request.get<ContainerListResponse>({ url: '/docker/images' })
 }
 
 // export const getUserByIdApi = (params: DepartmentUserParams) => {
