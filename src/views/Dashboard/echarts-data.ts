@@ -122,7 +122,7 @@ export const pieOptions: EChartsOption = {
   legend: {
     orient: 'vertical',
     left: 'left',
-    data: ['conpot', 'honeyd', 'kippo', '高交互蜜罐', 'webtrap']
+    data: ['工控蜜罐', 'honeyd', 'kippo', '高交互蜜罐', 'webtrap']
   },
   series: [
     {
@@ -131,7 +131,7 @@ export const pieOptions: EChartsOption = {
       radius: '55%',
       center: ['50%', '60%'],
       data: [
-        { value: conpot.length, name: 'conpot' },
+        { value: conpot.length, name: '工控蜜罐' },
         { value: honeyd.length, name: 'honeyd' },
         { value: kippo.length, name: 'kippo' },
         { value: real_honeypot.length, name: '高交互蜜罐' },
