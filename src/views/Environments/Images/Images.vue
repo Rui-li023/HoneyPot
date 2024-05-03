@@ -16,15 +16,12 @@ const { t } = useI18n()
 // 获取数据
 const { tableRegister, tableState, tableMethods } = useTable({
   fetchDataApi: async () => {
-    const { pageSize, currentPage } = tableState
-    const res = await getImageApi({
-      pageIndex: unref(currentPage),
-      pageSize: unref(pageSize),
-      ...unref(searchParams)
-    })
+    // const { pageSize, currentPage } = tableState
+    const res = await getImageApi()
+    console.log(res)
     return {
-      list: res.data.list || [],
-      total: res.data.total || 0
+      list: res.list || [],
+      total: res.total || 0
     }
   }
 })
@@ -43,7 +40,7 @@ const { getElTableExpose, delList } = tableMethods
 
 const delData = async (row?: ImageItem) => {
   const elTableExpose = await getElTableExpose()
-  ids.value = row ? [row.id] : elTableExpose?.getSelectionRows().map((v: ImageItem) => v.id) || []
+  ids.value = row ? [row.Id] : elTableExpose?.getSelectionRows().map((v: ImageItem) => v.Id) || []
   delLoading.value = true
 
   await delList(unref(ids).length).finally(() => {
@@ -68,25 +65,25 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    field: 'id',
+    field: 'Id',
     label: '镜像ID',
     search: {
       hidden: true
     }
   },
   {
-    field: 'name',
+    field: 'RepoTags',
     label: '镜像名称'
   },
   {
-    field: 'size',
+    field: 'Size',
     label: '镜像大小',
     search: {
       hidden: true
     }
   },
   {
-    field: 'createTime',
+    field: 'Created',
     label: '创建时间',
     sortable: true,
     search: {
@@ -128,7 +125,7 @@ const crudSchemas = reactive<CrudSchema[]>([
 
 const { allSchemas } = useCrudSchemas(crudSchemas)
 
-const searchParams = ref({})
+// const searchParams = ref({})
 // const setSearchParams = (params: any) => {
 //   currentPage.value = 1
 //   searchParams.value = params

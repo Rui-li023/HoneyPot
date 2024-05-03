@@ -100,7 +100,7 @@ const crudSchemas = reactive<CrudSchema[]>([
       },
       optionApi: async () => {
         const res = await getDepartmentApi()
-        return res.data.list
+        return res.list
       }
     },
     detail: {

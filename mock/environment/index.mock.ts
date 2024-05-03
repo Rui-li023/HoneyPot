@@ -1,4 +1,5 @@
 import { SUCCESS_CODE } from '@/constants'
+import { ImageItem, ContainerItem } from '@/api/environment/types'
 
 const timeout = 1000
 
@@ -45,71 +46,47 @@ const Data = {
   length: List.length
 }
 
-const List1: {
-  id: string
-  name: string
-  startTime: string
-  cmd: string
-  displayTime: string
-}[] = [
+const Containers: ContainerItem[] = [
   {
-    id: 'ab4a5be615ae',
-    name: '/ssh_pot',
-    startTime: 'Up about one hour!',
-    cmd: '/sbin/my_init',
-    displayTime: '2024.03.01 12:02:11'
+    Id: 'ab4a5be615ae',
+    Names: ['/ssh_pot'],
+    Created: 123,
+    Command: '/sbin/my_init'
   },
   {
-    id: 'f405db84695d',
-    name: '/ssh_pot',
-    startTime: 'Up about one hour!',
-    cmd: '/sbin/my_init',
-    displayTime: '2024.03.01 12:02:11'
+    Names: ['/ssh_pot'],
+    Created: 1234,
+    Command: '/sbin/my_init',
+    Id: 'f405db84695d'
   },
   {
-    id: '0873558a41c9',
-    name: '/mod_bus',
-    startTime: 'Up about one hour!',
-    cmd: '/bin/my_init',
-    displayTime: '2024.03.01 12:02:11'
+    Id: '0873558a41c9',
+    Names: ['/mod_bus'],
+    Created: 12345,
+    Command: '/bin/my_init'
   }
 ]
 
-const Data2 = {
-  list: List1,
-  length: List1.length
-}
-
-const List3: {
-  id: string
-  name: string
-  size: string
-  createTime: string
-}[] = [
+const Images: ImageItem[] = [
   {
-    id: 'ab4a5be615ae',
-    name: '/ssh_pot',
-    size: '512MB',
-    createTime: '2024.03.01 12:02:11'
+    Id: 'ab4a5be615ae',
+    RepoTags: ['/ssh_pot'],
+    Size: 512,
+    Created: 123
   },
   {
-    id: 'f405db84695d',
-    name: '/ssh_pot',
-    size: '52MB',
-    createTime: '2024.03.01 12:02:11'
+    Id: 'f405db84695d',
+    RepoTags: ['/ssh_pot'],
+    Size: 512,
+    Created: 123
   },
   {
-    id: '0873558a41c9',
-    name: '/mod_bus',
-    size: '51MB',
-    createTime: '2024.03.01 12:03:41'
+    Id: '0873558a41c9',
+    RepoTags: ['/ssh_pot'],
+    Size: 512,
+    Created: 123
   }
 ]
-
-const Data3 = {
-  list: List3,
-  length: List3.length
-}
 
 export default [
   // 列表接口
@@ -131,7 +108,10 @@ export default [
     response: ({}) => {
       return {
         code: SUCCESS_CODE,
-        data: Data2
+        data: {
+          list: Containers,
+          length: Containers.length
+        }
       }
     }
   }, // 列表接口
@@ -142,7 +122,10 @@ export default [
     response: ({}) => {
       return {
         code: SUCCESS_CODE,
-        data: Data3
+        data: {
+          list: Images,
+          length: Images.length
+        }
       }
     }
   }

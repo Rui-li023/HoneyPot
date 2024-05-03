@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { ContentWrap } from '@/components/ContentWrap'
 import { useI18n } from '@/hooks/web/useI18n'
-import { Table, TableColumn } from '@/components/Table'
+import { Table } from '@/components/Table'
 import { ref, unref, reactive, watch } from 'vue'
 import { BaseButton } from '@/components/Button'
 import { getScanLogListApi } from '@/api/scanlog'
@@ -10,7 +10,7 @@ import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 import type { ScanLogItem } from '@/api/scanlog/types'
 import Detail from './components/Detail.vue'
 import { Dialog } from '@/components/Dialog'
-import { ElTag, ElTree } from 'element-plus'
+import { ElTree } from 'element-plus'
 import { Search } from '@/components/Search'
 import { DateTimePickerComponentProps } from '@/components/Form'
 const { t } = useI18n()
@@ -20,14 +20,13 @@ const { tableRegister, tableState, tableMethods } = useTable({
   fetchDataApi: async () => {
     const { pageSize, currentPage } = tableState
     const res = await getScanLogListApi({
-      id: unref(currentNodeKey),
-      pageIndex: unref(currentPage),
-      pageSize: unref(pageSize),
+      offset: unref(pageSize) * (unref(currentPage) - 1),
+      limit: 10,
       ...unref(searchParams)
     })
     return {
-      list: res.data.list || [],
-      total: res.data.total || 0
+      list: res || [],
+      total: res.length || 0
     }
   }
 })
@@ -80,20 +79,20 @@ const crudSchemas = reactive<CrudSchema[]>([
         options: [
           {
             label: 'TCP',
-            value: 'TCP'
+            value: 'tcp'
           },
           {
             label: 'UDP',
-            value: 'UDP'
+            value: 'udp'
           },
           {
-            label: 'ICMPv4',
-            value: 'ICMPv4'
-          },
-          {
-            label: 'ICMPv6',
-            value: 'ICMPv6'
+            label: 'ICMP',
+            value: 'icmp'
           }
+          // {
+          //   label: 'ICMPv6',
+          //   value: 'ICMPv6'
+          // }
         ]
       }
     }
@@ -103,7 +102,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     label: '蜜罐种类'
   },
   {
-    field: 'display_time',
+    field: 'time',
     label: '日志时间',
     sortable: true,
     search: {
@@ -114,42 +113,42 @@ const crudSchemas = reactive<CrudSchema[]>([
       width: 200
     }
   },
-  {
-    field: 'importance',
-    label: '告警等级',
-    table: {
-      formatter: (_: Recordable, __: TableColumn, cellValue: number) => {
-        return (
-          <ElTag type={cellValue === 1 ? 'success' : cellValue === 2 ? 'warning' : 'danger'}>
-            {cellValue === 1
-              ? t('tableDemo.important')
-              : cellValue === 2
-                ? t('tableDemo.good')
-                : t('tableDemo.commonly')}
-          </ElTag>
-        )
-      }
-    },
-    search: {
-      component: 'Select',
-      componentProps: {
-        options: [
-          {
-            label: '一级',
-            value: '0'
-          },
-          {
-            label: '二级',
-            value: '1'
-          },
-          {
-            label: '三级',
-            value: '2'
-          }
-        ]
-      }
-    }
-  },
+  // {
+  //   field: 'importance',
+  //   label: '告警等级',
+  //   table: {
+  //     formatter: (_: Recordable, __: TableColumn, cellValue: number) => {
+  //       return (
+  //         <ElTag type={cellValue === 1 ? 'success' : cellValue === 2 ? 'warning' : 'danger'}>
+  //           {cellValue === 1
+  //             ? t('tableDemo.important')
+  //             : cellValue === 2
+  //               ? t('tableDemo.good')
+  //               : t('tableDemo.commonly')}
+  //         </ElTag>
+  //       )
+  //     }
+  //   },
+  //   search: {
+  //     component: 'Select',
+  //     componentProps: {
+  //       options: [
+  //         {
+  //           label: '一级',
+  //           value: '0'
+  //         },
+  //         {
+  //           label: '二级',
+  //           value: '1'
+  //         },
+  //         {
+  //           label: '三级',
+  //           value: '2'
+  //         }
+  //       ]
+  //     }
+  //   }
+  // },
   {
     field: 'action',
     label: t('tableDemo.action'),
@@ -187,7 +186,7 @@ const setSearchParams = (params: any) => {
 }
 const treeEl = ref<typeof ElTree>()
 
-const currentNodeKey = ref('')
+// const currentNodeKey = ref('')
 
 const currentDepartment = ref('')
 watch(

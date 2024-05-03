@@ -24,8 +24,8 @@ const { tableRegister, tableState, tableMethods } = useTable({
       ...unref(searchParams)
     })
     return {
-      list: res.data.list || [],
-      total: res.data.total || 0
+      list: res.list || [],
+      total: res.total || 0
     }
   }
 })
