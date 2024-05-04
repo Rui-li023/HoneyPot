@@ -1,5 +1,10 @@
 import request from '@/axios'
-import { NodeListResponse, NodeListParams, ContainerListResponse } from './types'
+import {
+  NodeListResponse,
+  NodeListParams,
+  ContainerListResponse,
+  CreateContainerParams
+} from './types'
 
 export const getNodeApi = (params: NodeListParams) => {
   return request.get<NodeListResponse>({ url: '/mock/node/list', params })
@@ -11,6 +16,14 @@ export const getContainerApi = () => {
 
 export const getImageApi = () => {
   return request.get<ContainerListResponse>({ url: '/docker/images' })
+}
+
+export const createContainerApi = (data: CreateContainerParams) => {
+  return request.post({ url: '/docker/containers', data })
+}
+
+export const delContainerApi = (params: { id_or_name: string }) => {
+  return request.delete({ url: '/docker/containers', params })
 }
 
 // export const getUserByIdApi = (params: DepartmentUserParams) => {

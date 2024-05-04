@@ -51,22 +51,16 @@ export interface ImageListResponse {
   total: number
 }
 
-// export interface ImageListParams {
-//   pageSize: number
-//   pageIndex: number
-//   name?: string
-// }
-// export interface DepartmentUserItem {
-//   id: string
-//   username: string
-//   account: string
-//   email: string
-//   createTime: string
-//   role: string
-//   department: DepartmentItem
-// }
-
-// export interface DepartmentUserResponse {
-//   list: DepartmentUserItem[]
-//   total: number
-// }
+export interface CreateContainerParams {
+  Hostname?: string
+  Domainname?: string
+  User?: string
+  Env?: string[]
+  Cmd?: string[]
+  Image: string
+  Volumes?: object
+  WorkingDir?: string
+  Entrypoint?: string[]
+  HostConfig?: object
+  NetworkingConfig?: object
+}

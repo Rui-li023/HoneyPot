@@ -10,9 +10,14 @@ import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 import Detail from './components/Detail.vue'
 import { Dialog } from '@/components/Dialog'
 import { ElTree } from 'element-plus'
+// import { Descriptions, DescriptionsSchema } from '@/components/Descriptions'
+import { Form, FormSchema } from '@/components/Form'
+import { useForm } from '@/hooks/web/useForm'
+import { useValidator } from '@/hooks/web/useValidator'
+import { createContainerApi } from '@/api/environment/index'
 // import { Search } from '@/components/Search'
 // import { DateTimePickerComponentProps } from '@/components/Form'
-import type { ContainerItem } from '@/api/environment/types'
+import type { ContainerItem, CreateContainerParams } from '@/api/environment/types'
 const { t } = useI18n()
 
 // 获取数据
@@ -29,7 +34,8 @@ const { tableRegister, tableState, tableMethods } = useTable({
 const AddAction = () => {
   dialogTitle.value = t('exampleDemo.add')
   currentRow.value = undefined
-  dialogVisible.value = true
+  formVisible.value = true
+  // dialogVisible.value = true
   actionType.value = ''
 }
 const delLoading = ref(false)
@@ -171,6 +177,84 @@ const action = (row: ContainerItem, type: string) => {
   currentRow.value = { ...row }
   dialogVisible.value = true
 }
+
+const { required } = useValidator()
+const { formRegister, formMethods } = useForm()
+
+const addContainerSchema = reactive<FormSchema[]>([
+  {
+    field: 'Hostname',
+    label: '主机名',
+    component: 'Input',
+    formItemProps: {
+      // rules: [required()]
+    }
+  },
+  {
+    field: 'Domainname',
+    label: '域名',
+    component: 'Input',
+    formItemProps: {
+      // rules: [required()]
+    }
+  },
+  {
+    field: 'User',
+    label: '用户',
+    component: 'Input',
+    formItemProps: {
+      // rules: [required()]
+    }
+  },
+  {
+    field: 'Image',
+    label: '镜像',
+    component: 'Input',
+    formItemProps: {
+      rules: [required()]
+    }
+  },
+  {
+    field: 'WorkingDir',
+    label: '工作目录',
+    component: 'Input',
+    formItemProps: {
+      // rules: [required()]
+    }
+  },
+  {
+    field: 'Entrypoint',
+    label: 'entrypoint',
+    component: 'Input'
+  },
+  {
+    field: 'Env',
+    label: '环境变量',
+    component: 'Input',
+    componentProps: {
+      type: 'textarea',
+      rows: 2
+    }
+  },
+  {
+    field: 'Cmd',
+    label: '启动命令',
+    component: 'Input',
+    componentProps: {
+      type: 'textarea',
+      rows: 2
+    }
+  }
+])
+
+const formSubmit = async () => {
+  const data = await formMethods.getFormData()
+  await createContainerApi({
+    ...(data as CreateContainerParams)
+  })
+}
+
+const formVisible = ref(false)
 </script>
 
 <template>
@@ -207,6 +291,13 @@ const action = (row: ContainerItem, type: string) => {
         :detail-schema="allSchemas.detailSchema"
         :current-row="currentRow"
       />
+    </Dialog>
+    <Dialog v-model="formVisible" :title="dialogTitle">
+      <Form :schema="addContainerSchema" @register="formRegister" />
+      <template #footer>
+        <BaseButton type="primary" @click="formSubmit">{{ t('dialogDemo.submit') }}</BaseButton>
+        <BaseButton @click="formVisible = false">{{ t('dialogDemo.close') }}</BaseButton>
+      </template>
     </Dialog>
   </div>
 </template>
